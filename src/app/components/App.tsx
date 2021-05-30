@@ -27,8 +27,13 @@ const App = ({}) => {
     0,
     2,
     4,
+    6,
     8,
+    10,
+    12,
+    14,
     16,
+    20,
     24,
     32
   ]);
@@ -228,8 +233,6 @@ const App = ({}) => {
       }
     };
   }, []);
-
-  let body;
 
   return (
     <div className="container">

@@ -11,7 +11,7 @@ import {
 
 figma.showUI(__html__, { width: 360, height: 580 });
 
-let borderRadiusArray = [0, 2, 4, 8, 16, 24, 32];
+let borderRadiusArray = [0, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 32];
 let originalNodeTree = [];
 let lintVectors = false;
 
