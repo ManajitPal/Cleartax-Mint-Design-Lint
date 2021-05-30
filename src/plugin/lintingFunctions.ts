@@ -123,7 +123,14 @@ export function customCheckTextFills(node, errors) {
   // Here we create an array of style keys (https://www.figma.com/plugin-docs/api/PaintStyle/#key)
   // that we want to make sure our text layers aren't using.
   const fillsToCheck = [
-    "4b93d40f61be15e255e87948a715521c3ae957e6"
+    "46a3637effd44c365ecb6a5b7f2bdc119e21c71f",
+    "7cdc3f4c522a944e08d1c5d0986fbc170f1de62f",
+    "e413d05110a9bbeb9c79538352861521783cc23b",
+    "d86497f3ba3162db31d943ae74edd599804aa5c4",
+    "5ba2498d48ce8742f2f85756d0495d15916c853b",
+    "3cb063709e4435bfd2703d1dfc6431646769c927",
+    "e0daf62f5bb19dd2374c9804ffd2441ced618465",
+    "d27a90323fae8a508e2cd30049fe33d71986b85e"
     // To collect style keys, use a plugin like Inspector, or use console commands like figma.getLocalPaintStyles();
     // in your design system file.
   ];
@@ -157,7 +164,7 @@ export function customCheckTextFills(node, errors) {
           node, // Node object we use to reference the error (id, layer name, etc)
           "fill", // Type of error (fill, text, effect, etc)
           "Incorrect text color use", // Message we show to the user
-          "Using a background color on a text layer" // Determines the fill, so we can show a hex value.
+          "Using a background color on a text layer (Use grey grey500-900 for text color)" // Determines the fill, so we can show a hex value.
         )
       );
     }
@@ -252,6 +259,65 @@ export function checkFills(node, errors) {
   }
 }
 
+//Checking for stroke color. Ideally it should be grey_300. Making sure it doesnt have any other grey!
+export function checkStrokeColor(node, errors) {
+  const strokesToCheck = [
+    "46a3637effd44c365ecb6a5b7f2bdc119e21c71f",
+    "7cdc3f4c522a944e08d1c5d0986fbc170f1de62f",
+    "d86497f3ba3162db31d943ae74edd599804aa5c4",
+    "5ba2498d48ce8742f2f85756d0495d15916c853b",
+    "3cb063709e4435bfd2703d1dfc6431646769c927",
+    "e0daf62f5bb19dd2374c9804ffd2441ced618465",
+    "d27a90323fae8a508e2cd30049fe33d71986b85e",
+    "d3beb5e5dff1432d416efbbc199dbc3ca2864b4a",
+    "8f35af12d51b229f6e4a061ebc4a9a4c443e99c8",
+    "69b9be664d97f392094c037a6a2f95f30dece07e",
+    "c917387690eb04ff23ddf17d2dc0ba5c3be02c91",
+    "5ba2498d48ce8742f2f85756d0495d15916c853b",
+    "3cb063709e4435bfd2703d1dfc6431646769c927",
+    "e0daf62f5bb19dd2374c9804ffd2441ced618465"
+  ];
+
+  let nodeStrokeStyle = node.strokeStyleId;
+
+  // If there are multiple text styles on a single text layer, we can't lint it
+  // we can return an error instead.
+  if (typeof nodeStrokeStyle === "symbol") {
+    return errors.push(
+      createErrorObject(
+        node, // Node object we use to reference the error (id, layer name, etc)
+        "Stroke", // Type of error (fill, text, effect, etc)
+        "Mixing two styles together", // Message we show to the user
+        "Multiple Styles" // Normally we return a hex value here
+      )
+    );
+  }
+
+  // We strip the additional style key characters so we can check
+  // to see if the fill is being used incorrectly.
+  nodeStrokeStyle = nodeStrokeStyle.replace("S:", "");
+  nodeStrokeStyle = nodeStrokeStyle.split(",")[0];
+
+  // If the node (layer) has a fill style, then check to see if there's an error.
+  if (nodeStrokeStyle !== "") {
+    // If we find the layer has a fillStroke that matches in the array create an error.
+    if (strokesToCheck.includes(nodeStrokeStyle)) {
+      return errors.push(
+        createErrorObject(
+          node, // Node object we use to reference the error (id, layer name, etc)
+          "stroke", // Type of error (fill, text, effect, etc)
+          "Incorrect stroke color use", // Message we show to the user
+          "Using a different grey color on the rectangle stroke (User grey300 or 500 for strokes)" // Determines the fill, so we can show a hex value.
+        )
+      );
+    }
+    // If there is no fillStroke on this layer,
+    // check to see why with our default linting function for fills.
+  } else {
+    checkStrokes(node, errors);
+  }
+}
+
 export function checkStrokes(node, errors) {
   if (node.strokes.length) {
     if (node.strokeStyleId === "" && node.visible === true) {
@@ -303,6 +369,15 @@ export function checkType(node, errors) {
     );
   } else {
     return;
+  }
+}
+
+// Checking whether a component is from mint library or not
+export function checkLibraryComponent(node, errors) {
+  if (node.remote === false) {
+    errors.push(
+      createErrorObject(node, "component", "Component isn't from library")
+    );
   }
 }
 

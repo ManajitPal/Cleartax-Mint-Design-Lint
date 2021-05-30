@@ -4,8 +4,9 @@ import {
   checkFills,
   checkStrokes,
   checkType,
-  customCheckTextFills
-  // customCheckTextFills,
+  checkStrokeColor,
+  customCheckTextFills,
+  checkLibraryComponent
 } from "./lintingFunctions";
 
 figma.showUI(__html__, { width: 360, height: 580 });
@@ -319,11 +320,12 @@ figma.ui.onmessage = msg => {
     //     createErrorObject(node, "component", "Component isn't from library")
     //   );
     // }
-
+    checkLibraryComponent(node, errors);
     checkFills(node, errors);
     checkRadius(node, errors, borderRadiusArray);
     checkEffects(node, errors);
     checkStrokes(node, errors);
+    checkStrokeColor(node, errors);
 
     return errors;
   }
@@ -340,6 +342,7 @@ figma.ui.onmessage = msg => {
     let errors = [];
 
     checkStrokes(node, errors);
+    checkStrokeColor(node, errors);
     checkEffects(node, errors);
 
     return errors;
@@ -350,6 +353,7 @@ figma.ui.onmessage = msg => {
 
     checkFills(node, errors);
     checkStrokes(node, errors);
+    checkStrokeColor(node, errors);
     checkRadius(node, errors, borderRadiusArray);
     checkEffects(node, errors);
 
@@ -364,9 +368,10 @@ figma.ui.onmessage = msg => {
 
     // We could also comment out checkFills and use a custom function instead
     // Take a look at line 122 in lintingFunction.ts for an example.
-    // customCheckTextFills(node, errors);
+    customCheckTextFills(node, errors);
     checkEffects(node, errors);
     checkStrokes(node, errors);
+    checkStrokeColor(node, errors);
 
     return errors;
   }
@@ -377,6 +382,7 @@ figma.ui.onmessage = msg => {
     checkFills(node, errors);
     checkRadius(node, errors, borderRadiusArray);
     checkStrokes(node, errors);
+    checkStrokeColor(node, errors);
     checkEffects(node, errors);
 
     return errors;
@@ -389,6 +395,7 @@ figma.ui.onmessage = msg => {
     if (lintVectors === true) {
       checkFills(node, errors);
       checkStrokes(node, errors);
+      checkStrokeColor(node, errors);
       checkEffects(node, errors);
     }
 
@@ -400,6 +407,7 @@ figma.ui.onmessage = msg => {
 
     checkFills(node, errors);
     checkStrokes(node, errors);
+    checkStrokeColor(node, errors);
     checkEffects(node, errors);
 
     return errors;

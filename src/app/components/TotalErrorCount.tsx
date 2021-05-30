@@ -25,7 +25,6 @@ function TotalErrorCount(props) {
       ) : (
         <div className="totals-row totals-row--success">
           <div className="section-title">
-            {" "}
             🎉 Yay! No errors in the selection.
           </div>
           <span className="error-count success">

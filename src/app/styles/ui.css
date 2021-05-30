@@ -261,6 +261,25 @@ body {
   flex: 1;
 }
 
+.compliance-row {
+  position: relative;
+  font-size: 12px;
+  font-weight: 400;
+  color: #333333;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.compliance-error {
+  color: #fe6262;
+}
+
+.compliance-success {
+  color: #55db9e;
+}
+
 .error-count {
   min-width: none;
   min-height: none;

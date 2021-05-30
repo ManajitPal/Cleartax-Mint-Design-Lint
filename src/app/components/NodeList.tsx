@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 import ListItem from "./ListItem";
 import TotalErrorCount from "./TotalErrorCount";
+import DSCompliance from "./DSCompliance";
 import SettingsPanel from "./SettingsPanel";
 
 function NodeList(props) {
@@ -33,6 +34,11 @@ function NodeList(props) {
       });
     }
   });
+
+  let complianceArray = {
+    frameArray: props.errorArray,
+    errorArray: filteredErrorArray
+  };
 
   const handleNodeClick = id => {
     // Opens the panel if theres an error.
@@ -111,6 +117,7 @@ function NodeList(props) {
         <ul className="list">{listItems}</ul>
         <div className="footer">
           <TotalErrorCount errorArray={filteredErrorArray} />
+          <DSCompliance {...complianceArray} />
           <div className="actions-row">
             <button
               className="icon icon--adjust icon--button settings-button"
@@ -155,6 +162,7 @@ function NodeList(props) {
       <React.Fragment>
         <ul className="list"></ul>
         <TotalErrorCount errorArray={filteredErrorArray} />
+        <DSCompliance {...complianceArray} />
       </React.Fragment>
     );
   }

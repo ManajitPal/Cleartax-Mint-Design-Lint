@@ -220,7 +220,6 @@ const App = ({}) => {
       } else if (type === "fetched layer") {
         // Grabs the properties of the first layer.
         setSelectedNode(() => JSON.parse(message));
-
         // Ask the controller to lint the layers for errors.
         parent.postMessage({ pluginMessage: { type: "update-errors" } }, "*");
       } else if (type === "updated errors") {
